@@ -17,6 +17,37 @@ body {
     line-height: 1.6;
 }
 
+
+#expenseChart {
+    max-width: 250px;
+    max-height: 250px;
+    margin: auto;
+}
+
+#breakdownContent {
+    margin-left: auto;
+    padding-left: 20px;
+    border-left: 2px solid #ccc;
+}
+
+#breakdownContent h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+#breakdownContent ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#breakdownContent li {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+
 .container {
     max-width: 1000px;
     margin: 0 auto;
