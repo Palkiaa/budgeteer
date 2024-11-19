@@ -1,0 +1,216 @@
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --background-color: #ecf0f1;
+    --text-color: #2c3e50;
+    --card-bg: #ffffff;
+    --danger-color: #e74c3c;
+    --success-color: #2ecc71;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2, h3 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+}
+
+.input-group {
+    margin-bottom: 1rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+input, select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+button {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+.expense-item, .income-item {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+}
+
+.main-expense {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.expense-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.sub-expense-list {
+    margin-left: 2rem;
+    margin-top: 0.5rem;
+    border-left: 2px solid #ddd;
+    padding-left: 1rem;
+}
+
+.sub-expense-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    margin-bottom: 0.25rem;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.add-sub-btn {
+    background-color: var(--success-color);
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+.add-sub-btn:hover {
+    background-color: #27ae60;
+}
+
+.remove-btn {
+    background-color: var(--danger-color);
+    padding: 0.5rem 1rem;
+}
+
+.remove-btn:hover {
+    background-color: #c0392b;
+}
+
+.remove-btn.small {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    margin: 15% auto;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    right: 1rem;
+    top: 0.5rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.chart-container {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+#expenseChart {
+    width: 60%;
+}
+
+#chartLegend {
+    width: 35%;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+#summary {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+.summary-numbers {
+    margin-bottom: 1.5rem;
+}
+
+.summary-numbers p {
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+}
+
+.positive {
+    color: var(--success-color);
+    font-weight: bold;
+}
+
+.negative {
+    color: var(--danger-color);
+    font-weight: bold;
+}
+
+.budget-analysis {
+    border-top: 1px solid #ddd;
+    padding-top: 1rem;
+}
+
+.budget-analysis p {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.income-section, .expense-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}

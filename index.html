@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Budget Tracker</h1>
+        
+        <div class="income-section">
+            <h2>Income</h2>
+            <div class="input-group">
+                <label for="salary">Monthly Salary (R)</label>
+                <input type="number" id="salary" placeholder="Enter your monthly salary">
+            </div>
+            <button id="addIncomeBtn">Add Additional Income</button>
+            <div id="additionalIncomeList"></div>
+        </div>
+
+        <div class="expense-section">
+            <h2>Add Expense</h2>
+            <div class="input-group">
+                <label for="expenseName">Name</label>
+                <input type="text" id="expenseName" placeholder="Enter expense name">
+            </div>
+            <div class="input-group">
+                <label for="expenseAmount">Amount (R)</label>
+                <input type="number" id="expenseAmount" placeholder="Enter amount">
+            </div>
+            <div class="input-group">
+                <label for="expenseCategory">Category</label>
+                <select id="expenseCategory">
+                    <option value="housing">Housing</option>
+                    <option value="transportation">Transportation</option>
+                    <option value="food">Food</option>
+                    <option value="utilities">Utilities</option>
+                    <option value="healthcare">Healthcare</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <button id="addExpenseBtn">Add Expense</button>
+        </div>
+
+        <div id="expenseList"></div>
+        
+        <div class="chart-container">
+            <canvas id="expenseChart"></canvas>
+            <div id="chartLegend"></div>
+        </div>
+
+        <div id="summary"></div>
+    </div>
+
+    <div id="incomeModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add Additional Income</h2>
+            <div class="input-group">
+                <label for="incomeSource">Source</label>
+                <input type="text" id="incomeSource" placeholder="Enter income source">
+            </div>
+            <div class="input-group">
+                <label for="incomeAmount">Amount (R)</label>
+                <input type="number" id="incomeAmount" placeholder="Enter amount">
+            </div>
+            <button id="submitIncomeBtn">Add Income</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/app.js" type="module"></script>
+</body>
+</html>
