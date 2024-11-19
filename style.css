@@ -24,29 +24,115 @@ body {
     margin: auto;
 }
 
-#breakdownContent {
-    margin-left: auto;
-    padding-left: 20px;
-    border-left: 2px solid #ccc;
+.groc-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 1000;
+    overflow: auto; /* Allow scrolling if content overflows */
 }
 
-#breakdownContent h3 {
-    font-size: 16px;
+.groc-modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 90vw;  /* Use viewport width for scaling */
+    max-height: 80vh; /* Use viewport height for scaling */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    overflow-y: auto; /* Enable vertical scrolling inside modal */
+    width: auto;
+    height: auto;
+}
+
+.groc-close {
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.groc-modal-table-wrapper {
+    max-height: 300px; /* Adjust as needed */
+    overflow-y: auto;
     margin-bottom: 10px;
-    color: #555;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
-#breakdownContent ul {
-    list-style-type: none;
-    padding: 0;
+/* Table styling */
+.groc-table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-#breakdownContent li {
-    margin-bottom: 5px;
-    font-size: 14px;
-    color: #333;
+.groc-table th,
+.groc-table td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
 }
 
+.groc-table th {
+    background: #f4f4f4;
+}
+
+.grocery-form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px; /* Space between items */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.grocery-form label {
+    margin-right: 5px; /* Space between label and input */
+}
+
+.grocery-form input {
+    padding: 5px;
+    margin-right: 10px; /* Space between input fields */
+}
+
+.grocery-form button {
+    padding: 6px 12px;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .groc-modal-content {
+        width: 95vw; /* Slightly larger modal on small screens */
+        max-height: 90vh; /* Allow more height */
+    }
+
+    .groc-modal-table-wrapper {
+        width: 100vw; /* Full width for very small screens */
+        max-height: 95vh; /* Use most of the screen height */
+    }
+
+    .groc-table th,
+    .groc-table td {
+        font-size: 14px; /* Smaller font for better fit */
+    }
+}
+
+@media (max-width: 480px) {
+    .groc-modal-content {
+        width: 95%;
+        max-width: 400px;
+    }
+
+    .groc-table th,
+    .groc-table td {
+        font-size: 12px; /* Even smaller font */
+        padding: 6px;
+    }
+}
 
 .container {
     max-width: 1000px;

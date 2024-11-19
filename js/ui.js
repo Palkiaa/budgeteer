@@ -247,3 +247,4 @@ export class UI {
         return icons[category] || 'question-circle';
     }
 }
+

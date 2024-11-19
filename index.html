@@ -64,7 +64,44 @@
         </div>
 
         <div id="summary"></div>
+
+        <button id="viewGroceryList">View Grocery List</button>
     </div>
+
+    <div id="groceryModal" class="groc-modal" style="display: none;">
+        <div class="groc-modal-content">
+            <span id="closeGroceryModal" class="groc-close">&times;</span>
+       
+            <h3>Grocery List</h3>
+            <i class="fa fa-refresh" id="resetGroceryList" >Reset List</i>
+            <table class="groc-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Price (R)</th>
+                        <th>Quantity</th>
+                        <th>Done</th>
+                        <th>Actions</th> <!-- New column for Remove button -->
+                    </tr>
+                </thead>
+                <tbody id="groceryList"></tbody>
+            </table>
+            <div class="grocery-form">
+                <label for="groceryName">Item Name:</label>
+                <input type="text" id="groceryName" placeholder="Item Name" />
+                
+                <label for="groceryPrice">Price (R):</label>
+                <input type="number" id="groceryPrice" placeholder="Price (R)" step="0.01" min="0" />
+                
+                <label for="groceryQuantity">Quantity:</label>
+                <input type="number" id="groceryQuantity" placeholder="Quantity" min="1" />
+                
+                <button id="saveGroceryItem">Save</button>
+            </div>
+            
+        </div>
+    </div>
+    
 
     <div id="incomeModal" class="modal">
         <div class="modal-content">

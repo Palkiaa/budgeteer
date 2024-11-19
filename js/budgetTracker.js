@@ -3,6 +3,13 @@ export class BudgetTracker {
         this.expenses = [];
         this.additionalIncomes = [];
         this.salary = 0;
+        this.groceries = [];
+    }
+
+    addGroceries(grocery) {
+        grocery.groc = [];
+        this.groceries.push(grocery);
+        this.saveData();
     }
 
     addExpense(expense) {
@@ -23,6 +30,11 @@ export class BudgetTracker {
 
     removeExpense(index) {
         this.expenses.splice(index, 1);
+        this.saveData();
+    }
+
+    removeGrocery(index) {
+        this.groceries.splice(index, 1);
         this.saveData();
     }
 
@@ -51,6 +63,11 @@ export class BudgetTracker {
     getTotalIncome() {
         const additionalIncome = this.additionalIncomes?.reduce((sum, income) => sum + (income.amount || 0), 0) || 0;
         return (this.salary || 0) + additionalIncome;
+    }
+
+    getGroceries() {
+        const groc = this.groceries;
+        return groc;
     }
 
     getTotalExpenses() {
@@ -135,7 +152,8 @@ export class BudgetTracker {
             totalIncome: this.getTotalIncome(),
             totalExpenses: this.getTotalExpenses(),
             balance: this.getBalance(),
-            analysis: this.analyzeBudget()
+            analysis: this.analyzeBudget(),
+            groceries: this.getGroceries(),
         };
     }
 
@@ -143,7 +161,8 @@ export class BudgetTracker {
         localStorage.setItem('budgetTrackerData', JSON.stringify({
             expenses: this.expenses,
             additionalIncomes: this.additionalIncomes,
-            salary: this.salary
+            salary: this.salary,
+            groceries: this.groceries
         }));
     }
 
@@ -158,12 +177,14 @@ export class BudgetTracker {
                 }));
                 this.additionalIncomes = data.additionalIncomes || [];
                 this.salary = data.salary || 0;
+                this.groceries = data.groceries || [];
             }
         } catch (error) {
             console.error('Error loading data:', error);
             this.expenses = [];
             this.additionalIncomes = [];
             this.salary = 0;
+            this.groceries = [];
         }
     }
 }
