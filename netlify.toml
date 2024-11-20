@@ -1,4 +1,4 @@
 [[headers]]
-  for = "/images/site.webmanifest"
+  for = "/assets/site.webmanifest"
   [headers.values]
     Content-Type = "application/manifest+json"

@@ -12,12 +12,12 @@ export default defineConfig({
         theme_color: '#3498db',
         icons: [
           {
-            src: '/images/favicon-96x96.png',
+            src: 'assets/favicon-96x96.png',
             sizes: '96x96',
             type: 'image/png'
           },
           {
-            src: '/images/apple-touch-icon.png',
+            src: 'assets/apple-touch-icon.png',
             sizes: '180x180',
             type: 'image/png'
           }
