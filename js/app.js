@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
         // Listen for the beforeinstallprompt event
         window.addEventListener('beforeinstallprompt', (e) => {
+            alert("here", e)
           // Prevent default prompt
           e.preventDefault();
           // Store the event for later
@@ -55,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
         // Handle install button click
         installButton?.addEventListener('click', async () => {
+            alert(deferredPrompt)
           console.log('Install button clicked');
           if (!deferredPrompt) {
             console.log('No install prompt available');
@@ -66,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
             await deferredPrompt.prompt();
             // Wait for user choice
             const { outcome } = await deferredPrompt.userChoice;
+            alert(outcome)
             console.log(`User response: ${outcome}`);
             
             if (outcome === 'accepted') {
