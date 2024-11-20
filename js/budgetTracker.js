@@ -5,8 +5,25 @@ export class BudgetTracker {
         this.additionalIncomes = [];
         this.salary = 0;
         this.netSalary = 0;
+        this.groceries = [];
         this.initSalaryInputListener();
     }
+
+
+    getGroceries() {
+        const groc = this.groceries;
+        return groc;
+    }
+    removeGrocery(index) {
+        this.groceries.splice(index, 1);
+        this.saveData();
+    }
+    addGroceries(grocery) {
+        grocery.groc = [];
+        this.groceries.push(grocery);
+        this.saveData();
+    }
+
 
         /**
      * Initializes the salary input listener to dynamically update salary details.
@@ -212,7 +229,8 @@ export class BudgetTracker {
             totalIncome: this.getTotalIncome(),
             totalExpenses: this.getTotalExpenses(),
             balance: this.getBalance(),
-            analysis: this.analyzeBudget()
+            analysis: this.analyzeBudget(),
+            groceries: this.getGroceries(),
         };
     }
 

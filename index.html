@@ -181,52 +181,39 @@
         </div>
     </div>
 
-    <div id="groceryModal" class="modal fade">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Grocery List</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="d-flex justify-content-end mb-3">
-                        <button id="resetGroceryList" class="btn btn-outline-secondary btn-sm">
-                            <i class="fas fa-refresh"></i> Reset List
-                        </button>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Price (R)</th>
-                                    <th>Quantity</th>
-                                    <th>Done</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="groceryList"></tbody>
-                        </table>
-                    </div>
-                    <div class="mt-4">
-                        <h6>Add New Item</h6>
-                        <div class="row g-3">
-                            <div class="col-md-4">
-                                <input type="text" id="groceryName" class="form-control" placeholder="Item Name">
-                            </div>
-                            <div class="col-md-3">
-                                <input type="number" id="groceryPrice" class="form-control" placeholder="Price (R)" step="0.01" min="0">
-                            </div>
-                            <div class="col-md-3">
-                                <input type="number" id="groceryQuantity" class="form-control" placeholder="Quantity" min="1">
-                            </div>
-                            <div class="col-md-2">
-                                <button id="saveGroceryItem" class="btn btn-primary w-100">Add</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div id="groceryModal" class="groc-modal" style="display: none;">
+        <div class="groc-modal-content">
+            <span id="closeGroceryModal" class="groc-close">&times;</span>
+       
+            <h3>Grocery List</h3>
+            <div style="display: flex; align-items: center; cursor: pointer;" id="resetGroceryList">
+                <i class="fa fa-refresh"  ></i><p>Reset List</p>
             </div>
+            <table class="groc-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Price (R)</th>
+                        <th>Quantity</th>
+                        <th>Done</th>
+                        <th>Actions</th> <!-- New column for Remove button -->
+                    </tr>
+                </thead>
+                <tbody id="groceryList"></tbody>
+            </table>
+            <div class="grocery-form">
+                <label for="groceryName">Item Name:</label>
+                <input type="text" id="groceryName" placeholder="Item Name" />
+                
+                <label for="groceryPrice">Price (R):</label>
+                <input type="number" id="groceryPrice" placeholder="Price (R)" step="0.01" min="0" />
+                
+                <label for="groceryQuantity">Quantity:</label>
+                <input type="number" id="groceryQuantity" placeholder="Quantity" min="1" />
+                
+                <button id="saveGroceryItem">Save</button>
+            </div>
+            
         </div>
     </div>
 
