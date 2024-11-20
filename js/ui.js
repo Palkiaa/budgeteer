@@ -164,10 +164,10 @@ export class UI {
         summary.innerHTML = `
             <h2>Summary</h2>
             <div class="summary-numbers">
-                <p>Total Income: R${data.totalIncome.toFixed(2)}</p>
-                <p>Total Expenses: R${data.totalExpenses.toFixed(2)}</p>
+                <p>Total Income: R${parseFloat(data.totalIncome)?.toFixed(2)}</p>
+                <p>Total Expenses: R${parseFloat(data.totalExpenses)?.toFixed(2)}</p>
                 <p class="${data.balance >= 0 ? 'positive' : 'negative'}">
-                    Balance: R${data.balance.toFixed(2)}
+                    Balance: R${parseFloat(data.balance)?.toFixed(2)}
                 </p>
             </div>
             <div class="budget-analysis">
@@ -247,4 +247,3 @@ export class UI {
         return icons[category] || 'question-circle';
     }
 }
-

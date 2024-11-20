@@ -1,16 +1,80 @@
+import { TaxCalculator } from "./taxCalculator";
 export class BudgetTracker {
     constructor() {
         this.expenses = [];
         this.additionalIncomes = [];
         this.salary = 0;
-        this.groceries = [];
+        this.netSalary = 0;
+        this.initSalaryInputListener();
     }
 
-    addGroceries(grocery) {
-        grocery.groc = [];
-        this.groceries.push(grocery);
-        this.saveData();
-    }
+        /**
+     * Initializes the salary input listener to dynamically update salary details.
+     */
+        initSalaryInputListener() {
+            const salaryInput = document.getElementById('salary');
+            if (salaryInput) {
+                let salaryTimeout;
+                salaryInput.addEventListener('input', (e) => {
+                    clearTimeout(salaryTimeout);
+                    salaryTimeout = setTimeout(() => {
+                        const grossSalary = parseFloat(e.target.value) || 0;
+                        this.updateSalaryDetails(grossSalary);
+                    }, 300);
+                });
+            }
+        }
+    
+        /**
+         * Updates salary details, including tax, UIF, and net salary, and updates the UI.
+         * @param {number} grossSalary - The gross monthly salary.
+         */
+        updateSalaryDetails(grossSalary) {
+            this.updateSalary(grossSalary);
+            const ageCategory = document.getElementById('ageCategory').value;
+            let age;
+            switch(ageCategory) {
+                case 'under65': age = 30; break;
+                case '65to74': age = 70; break;
+                case '75andOver': age = 80; break;
+            }
+        
+            const { tax, UIF, netSalary } = TaxCalculator.calculateNetSalary(grossSalary, age);
+            const annualIncome = grossSalary * 12;
+             this.updateNetSalary(netSalary);
+            let taxMessage = '';
+            if (tax === 0) {
+                if (age < 65 && annualIncome <= TaxCalculator.TAX_THRESHOLDS.under65) {
+                    taxMessage = `You don't pay income tax because your annual income (R${annualIncome.toFixed(2)}) is below the tax threshold of R${TaxCalculator.TAX_THRESHOLDS.under65} for your age group.`;
+                } else if (age >= 65 && age < 75 && annualIncome <= TaxCalculator.TAX_THRESHOLDS.under75) {
+                    taxMessage = `You don't pay income tax because your annual income (R${annualIncome.toFixed(2)}) is below the tax threshold of R${TaxCalculator.TAX_THRESHOLDS.under75} for your age group.`;
+                } else if (age >= 75 && annualIncome <= TaxCalculator.TAX_THRESHOLDS.over75) {
+                    taxMessage = `You don't pay income tax because your annual income (R${annualIncome.toFixed(2)}) is below the tax threshold of R${TaxCalculator.TAX_THRESHOLDS.over75} for your age group.`;
+                }
+            } else {
+                taxMessage = `You pay income tax because your annual income (R${annualIncome.toFixed(2)}) is above the tax threshold for your age group.`;
+            }
+        
+            const salaryDetails = document.getElementById('salaryDetails');
+            if (salaryDetails) {
+                salaryDetails.innerHTML = `
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p class="mb-1"><strong>Monthly Tax:</strong> R${parseFloat(tax).toFixed(2)}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="mb-1"><strong>Net Salary:</strong> R${parseFloat(netSalary).toFixed(2)} 
+                            <span class="text-muted">(UIF: R${parseFloat(UIF).toFixed(2)})</span></p>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <p class="mb-1 text-info">${taxMessage}</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
 
     addExpense(expense) {
         expense.subExpenses = [];
@@ -30,11 +94,6 @@ export class BudgetTracker {
 
     removeExpense(index) {
         this.expenses.splice(index, 1);
-        this.saveData();
-    }
-
-    removeGrocery(index) {
-        this.groceries.splice(index, 1);
         this.saveData();
     }
 
@@ -60,14 +119,15 @@ export class BudgetTracker {
         this.saveData();
     }
 
-    getTotalIncome() {
-        const additionalIncome = this.additionalIncomes?.reduce((sum, income) => sum + (income.amount || 0), 0) || 0;
-        return (this.salary || 0) + additionalIncome;
+    updateNetSalary(amount) {
+        this.netSalary = amount;
+        this.saveData();
     }
 
-    getGroceries() {
-        const groc = this.groceries;
-        return groc;
+
+    getTotalIncome() {
+        const additionalIncome = this.additionalIncomes?.reduce((sum, income) => sum + (income.amount || 0), 0) || 0;
+        return (this.netSalary || 0) + additionalIncome;
     }
 
     getTotalExpenses() {
@@ -152,8 +212,7 @@ export class BudgetTracker {
             totalIncome: this.getTotalIncome(),
             totalExpenses: this.getTotalExpenses(),
             balance: this.getBalance(),
-            analysis: this.analyzeBudget(),
-            groceries: this.getGroceries(),
+            analysis: this.analyzeBudget()
         };
     }
 
@@ -162,7 +221,7 @@ export class BudgetTracker {
             expenses: this.expenses,
             additionalIncomes: this.additionalIncomes,
             salary: this.salary,
-            groceries: this.groceries
+            netSalary: this.netSalary
         }));
     }
 
@@ -177,14 +236,15 @@ export class BudgetTracker {
                 }));
                 this.additionalIncomes = data.additionalIncomes || [];
                 this.salary = data.salary || 0;
-                this.groceries = data.groceries || [];
+                if (this.salary !== 0) {
+                    this.updateSalaryDetails(parseFloat(this.salary));
+                }
             }
         } catch (error) {
             console.error('Error loading data:', error);
             this.expenses = [];
             this.additionalIncomes = [];
             this.salary = 0;
-            this.groceries = [];
         }
     }
 }
