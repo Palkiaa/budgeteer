@@ -2,7 +2,7 @@
     "name": "Budget ZA",
     "short_name": "Budget ZA",
     "description": "Make Budget Simple",
-    "start_url": ".",
+    "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#ffffff",
