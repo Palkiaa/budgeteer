@@ -8,6 +8,12 @@
     --success-color: #2ecc71;
 }
 
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #ecf0f1; /* Set background to white */
+    }
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
