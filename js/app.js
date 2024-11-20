@@ -10,6 +10,9 @@ if ('serviceWorker' in navigator) {
     registerSW();
 }
 
+
+let deferredPrompt; // Declare deferredPrompt variable
+
 // Define global functions before DOMContentLoaded
 window.acceptCookies = () => CookieConsent.accept();
 window.rejectCookies = () => CookieConsent.reject();
@@ -25,7 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const ui = new UI();
     const chart = new ExpenseChart();
 
-    let deferredPrompt; // Declare deferredPrompt variable
 
     // Function to check if the app is installed as a PWA
     function checkIfAppInstalled() {
