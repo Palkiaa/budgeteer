@@ -173,6 +173,26 @@
         </div>
     </div>
 
+    <div id="cookieConsentModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cookie Consent</h5>
+                </div>
+                <div class="modal-body">
+                    <p>We use cookies to enhance your experience and save your preferences. No personal data is collected or shared.</p>
+                    <p>For more information, please read our <a href="#" onclick="window.privacyPolicy()">Privacy Policy</a>.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="window.rejectCookies()">Reject</button>
+                    <button type="button" class="btn btn-primary" onclick="window.acceptCookies()">Accept</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="cookieModalBackdrop" class="modal-backdrop fade" style="display: none;"></div>
+    
+
     <div id="groceryModal" class="groc-modal" style="display: none;">
         <div class="groc-modal-content">
             <span id="closeGroceryModal" class="groc-close">&times;</span>

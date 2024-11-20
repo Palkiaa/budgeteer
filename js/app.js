@@ -56,8 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
         // Handle install button click
         installButton?.addEventListener('click', async () => {
-            alert(deferredPrompt)
-          console.log('Install button clicked');
+          console.log('Install button clicked',deferredPrompt);
           if (!deferredPrompt) {
             console.log('No install prompt available');
             return;

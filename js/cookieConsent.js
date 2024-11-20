@@ -8,32 +8,14 @@ export class CookieConsent {
     }
 
     static showConsentModal() {
-        const modal = document.createElement('div');
-        modal.className = 'modal fade show';
-        modal.style.display = 'block';
-        modal.innerHTML = `
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Cookie Consent</h5>
-                    </div>
-                    <div class="modal-body">
-                        <p>We use cookies to enhance your experience and save your preferences. No personal data is collected or shared.</p>
-                        <p>For more information, please read our <a href="#" onclick="window.privacyPolicy()">Privacy Policy</a>.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="window.rejectCookies()">Reject</button>
-                        <button type="button" class="btn btn-primary" onclick="window.acceptCookies()">Accept</button>
-                    </div>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(modal);
+        const modal = document.getElementById('cookieConsentModal');
+        const backdrop = document.getElementById('cookieModalBackdrop');
 
-        // Add backdrop
-        const backdrop = document.createElement('div');
-        backdrop.className = 'modal-backdrop fade show';
-        document.body.appendChild(backdrop);
+        if (modal && backdrop) {
+            modal.classList.add('show');
+            modal.style.display = 'block';
+            backdrop.style.display = 'block';
+        }
     }
 
     static accept() {
@@ -47,10 +29,14 @@ export class CookieConsent {
     }
 
     static hideModal() {
-        const modal = document.querySelector('.modal');
-        const backdrop = document.querySelector('.modal-backdrop');
-        if (modal) document.body.removeChild(modal);
-        if (backdrop) document.body.removeChild(backdrop);
+        const modal = document.getElementById('cookieConsentModal');
+        const backdrop = document.getElementById('cookieModalBackdrop');
+
+        if (modal && backdrop) {
+            modal.classList.remove('show');
+            modal.style.display = 'none';
+            backdrop.style.display = 'none';
+        }
     }
 
     static showPrivacyPolicy() {
