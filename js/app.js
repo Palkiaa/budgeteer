@@ -33,71 +33,68 @@ document.addEventListener('DOMContentLoaded', () => {
     function initPWA() {
         const installButton = document.getElementById('pwaInstallBtn');
       
-        // Check if already installed
-        if (window.matchMedia('(display-mode: standalone)').matches) {
-            document.getElementById('pwaInstall').style.display = 'none';
+        // For iOS, show a custom install message
+        if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+          showInstallInstructions();
           return;
-        }else{
-            document.getElementById('pwaInstall').style.display = 'block';
         }
       
-        // Listen for the beforeinstallprompt event
+        // Check if already installed
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+          document.getElementById('pwaInstall').style.display = 'none';
+          return;
+        } else {
+          document.getElementById('pwaInstall').style.display = 'block';
+        }
+      
+        // Android install logic
         window.addEventListener('beforeinstallprompt', (e) => {
-            alert("here", e)
-          // Prevent default prompt
           e.preventDefault();
-          // Store the event for later
           deferredPrompt = e;
-          // Show install button
           if (installButton) {
             installButton.style.display = 'block';
           }
         });
       
-        // Handle install button click
         installButton?.addEventListener('click', async () => {
-          console.log('Install button clicked');
           if (!deferredPrompt) {
-            console.log('No install prompt available');
             return;
           }
       
           try {
-            // Show install prompt
             await deferredPrompt.prompt();
-            // Wait for user choice
             const { outcome } = await deferredPrompt.userChoice;
-            alert(outcome)
             console.log(`User response: ${outcome}`);
-            
-            if (outcome === 'accepted') {
-              console.log('PWA installation accepted');
-            } else {
-              console.log('PWA installation rejected');
-            }
           } catch (error) {
             console.error('Error during installation:', error);
           }
       
-          // Clear the deferred prompt
           deferredPrompt = null;
-          // Hide install button
-          if (installButton) {
-            installButton.style.display = 'none';
-          }
+          installButton.style.display = 'none';
         });
       
-        // Handle successful installation
-        window.addEventListener('appinstalled', (e) => {
+        window.addEventListener('appinstalled', () => {
           console.log('PWA installed successfully');
-          if (installButton) {
-            installButton.style.display = 'none';
-          }
+          installButton.style.display = 'none';
         });
       }
       
-      // Initialize PWA functionality
+      function showInstallInstructions() {
+        const installBanner = document.getElementById('installBanner');
+        if (installBanner) {
+          installBanner.style.display = 'block';
+        }
+
+        const closeButton = document.getElementById('closeInstallBanner');
+        if (closeButton) {
+          closeButton.addEventListener('click', () => {
+            installBanner.style.display = 'none';
+          });
+        }
+      }
+      
       initPWA();
+      
 
     // Load saved data
     budgetTracker.loadData();
