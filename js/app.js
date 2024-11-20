@@ -7,7 +7,9 @@ import { registerSW } from 'virtual:pwa-register';
 
 // Register Service Worker
 if ('serviceWorker' in navigator) {
-    registerSW();
+    registerSW({
+        immediate: true
+    });
 }
 
 
