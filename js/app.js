@@ -39,10 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
         // Check if already installed
         if (window.matchMedia('(display-mode: standalone)').matches) {
-            document.getElementById('pwaInstall').style.display = 'none';
           return;
-        }else{
-            document.getElementById('pwaInstall').style.display = 'block';
         }
       
         // Listen for the beforeinstallprompt event
