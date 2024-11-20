@@ -32,14 +32,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function initPWA() {
         const installButton = document.getElementById('pwaInstallBtn');
-        // Initially hide the install button
-        if (installButton) {
-          installButton.style.display = 'none';
-        }
       
         // Check if already installed
         if (window.matchMedia('(display-mode: standalone)').matches) {
+            document.getElementById('pwaInstall').style.display = 'none';
           return;
+        }else{
+            document.getElementById('pwaInstall').style.display = 'block';
         }
       
         // Listen for the beforeinstallprompt event
