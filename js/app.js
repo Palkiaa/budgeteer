@@ -30,50 +30,76 @@ document.addEventListener('DOMContentLoaded', () => {
     const ui = new UI();
     const chart = new ExpenseChart();
 
-
-    // Function to check if the app is installed as a PWA
-    function checkIfAppInstalled() {
-        // If the app is running in standalone mode, assume it's installed
+    function initPWA() {
+        const installButton = document.getElementById('pwaInstallBtn');
+        // Initially hide the install button
+        if (installButton) {
+          installButton.style.display = 'none';
+        }
+      
+        // Check if already installed
         if (window.matchMedia('(display-mode: standalone)').matches) {
-            // Hide the install prompt if the app is installed
-            document.getElementById('pwaInstall')?.classList.add('d-none');
-        } else {
-            // Show the install prompt if the app is not installed
-            document.getElementById('pwaInstall')?.classList.remove('d-none');
+            document.getElementById('pwaInstall').style.display = 'none';
+          return;
+        }else{
+            document.getElementById('pwaInstall').style.display = 'block';
         }
-    }
-    
-    // Event listener for beforeinstallprompt event
-    window.addEventListener('beforeinstallprompt', (e) => {
-        // Prevent the default install prompt from showing
-        e.preventDefault();
-        deferredPrompt = e;
-        // Check if the app is installed; if not, show the install prompt
-        checkIfAppInstalled();
-    });
-    
-    // Event listener for the install button click
-    document.getElementById('pwaInstallBtn')?.addEventListener('click', () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
+      
+        // Listen for the beforeinstallprompt event
+        window.addEventListener('beforeinstallprompt', (e) => {
+          // Prevent default prompt
+          e.preventDefault();
+          // Store the event for later
+          deferredPrompt = e;
+          // Show install button
+          if (installButton) {
+            installButton.style.display = 'block';
+          }
+        });
+      
+        // Handle install button click
+        installButton?.addEventListener('click', async () => {
+          console.log('Install button clicked');
+          if (!deferredPrompt) {
+            console.log('No install prompt available');
+            return;
+          }
+      
+          try {
+            // Show install prompt
+            await deferredPrompt.prompt();
+            // Wait for user choice
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`User response: ${outcome}`);
             
-            deferredPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                    console.log('User accepted the A2HS prompt');
-                } else {
-                    console.log('User dismissed the A2HS prompt');
-                }
-                // Only reset deferredPrompt after user choice
-                deferredPrompt = null;
-                document.getElementById('pwaInstall')?.classList.add('d-none');
-            });
-        }
-    });
-    
-    
-    // Check if the app is already installed on page load
-    checkIfAppInstalled();
- 
+            if (outcome === 'accepted') {
+              console.log('PWA installation accepted');
+            } else {
+              console.log('PWA installation rejected');
+            }
+          } catch (error) {
+            console.error('Error during installation:', error);
+          }
+      
+          // Clear the deferred prompt
+          deferredPrompt = null;
+          // Hide install button
+          if (installButton) {
+            installButton.style.display = 'none';
+          }
+        });
+      
+        // Handle successful installation
+        window.addEventListener('appinstalled', (e) => {
+          console.log('PWA installed successfully');
+          if (installButton) {
+            installButton.style.display = 'none';
+          }
+        });
+      }
+      
+      // Initialize PWA functionality
+      initPWA();
 
     // Load saved data
     budgetTracker.loadData();

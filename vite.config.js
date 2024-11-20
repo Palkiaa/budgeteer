@@ -24,7 +24,9 @@ export default defineConfig({
         ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'],  // Cache relevant files
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'], 
+        clientsClaim: true,
+        skipWaiting: true
       },
       devOptions: {
         enabled: true,
