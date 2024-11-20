@@ -27,13 +27,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let deferredPrompt; // Declare deferredPrompt variable
 
-    // Event listener for the beforeinstallprompt event
+    // Function to check if the app is installed as a PWA
+    function checkIfAppInstalled() {
+        // If the app is running in standalone mode, assume it's installed
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            // Hide the install prompt if the app is installed
+            document.getElementById('pwaInstall')?.classList.add('d-none');
+        } else {
+            // Show the install prompt if the app is not installed
+            document.getElementById('pwaInstall')?.classList.remove('d-none');
+        }
+    }
+    
+    // Event listener for beforeinstallprompt event
     window.addEventListener('beforeinstallprompt', (e) => {
         // Prevent the default install prompt from showing
         e.preventDefault();
         deferredPrompt = e;
-        // Show the custom install prompt (text + button)
-        document.getElementById('pwaInstall')?.classList.remove('d-none');
+        // Check if the app is installed; if not, show the install prompt
+        checkIfAppInstalled();
     });
     
     // Event listener for the install button click
@@ -55,6 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
+    
+    // Check if the app is already installed on page load
+    checkIfAppInstalled();
     
     
     // Load saved data

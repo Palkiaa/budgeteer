@@ -8,7 +8,7 @@ export default defineConfig({
       manifest: {
         name: 'Budget ZA',
         short_name: 'Budget ZA',
-        description: 'South African Budget Tracker',
+        description: 'Make Budget Simple',
         theme_color: '#3498db',
         icons: [
           {

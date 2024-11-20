@@ -1,6 +1,6 @@
 {
-  "name": "MyWebSite",
-  "short_name": "MySite",
+  "name": "BudgetZA",
+  "short_name": "BudgetZA",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",

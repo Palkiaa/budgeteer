@@ -1,31 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget Tracker</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6716174154009481"
-     crossorigin="anonymous"></script>
-     <link rel="icon" type="image/png" href="/images/favicon-96x96.png" sizes="96x96" />
+    <head>
+        <!-- Basic Meta Tags -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Track your budget easily with BudgetZA, an intuitive financial management tool to help you stay on top of your finances.">
+        <meta name="keywords" content="budget tracker, finance, budget management, financial app, personal finance, budgeting, PWA">
+        <meta name="author" content="BudgetZA Team">
+        
+        <title>BudgetZA - Budget Tracker</title>
+        
+        <!-- Linking Stylesheets -->
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+        <!-- Google AdSense Script -->
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6716174154009481" crossorigin="anonymous"></script>
+    
+        <!-- Favicon Links -->
+        <link rel="icon" type="image/png" href="/images/favicon-96x96.png" sizes="96x96" />
         <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
         <link rel="shortcut icon" href="/images/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/images//apple-touch-icon.png" />
-        <meta name="apple-mobile-web-app-title" content="MyWebSite" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
+        <meta name="apple-mobile-web-app-title" content="BudgetZA" />
+    
+        <!-- Manifest File for PWA -->
         <link rel="manifest" href="/images/site.webmanifest" />
-</head>
+        <meta name="theme-color" content="#007bff">
+    
+        <!-- Additional Meta Tags for iOS & Safari -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="application-name" content="BudgetZA">
+    
+        <!-- PWA Specific Meta Tags -->
+        <link rel="manifest" href="/manifest.json">
+        <meta name="theme-color" content="#007bff">
+
+           <!-- Open Graph Meta Tags (for social sharing) -->
+        <meta property="og:title" content="BudgetZA - Budget Tracker">
+        <meta property="og:description" content="Easily manage your budget, add grocery list, and calculate tax for your income with BudgetZA.">
+        <meta property="og:image" content="/images/logo.png">
+        <meta property="og:url" content="https://budgetza.netlify.app/">
+        <meta property="og:type" content="website">
+    </head>
+    
 <body>
     <div class="container py-4">
         <!-- PWA Install Prompt -->
         <div id="pwaInstall" class="d-none">
-            <p><strong>Install App!</strong> Add Budget ZA to your home screen for quick access.</p>
-            <button id="pwaInstallBtn" class="btn btn-outline-primary btn-sm">Install</button>
+            <p><strong>Install App!</strong> Add Budget ZA to your home screen for quick access.</p><button id="pwaInstallBtn" class="btn btn-outline-primary btn-sm">Install</button>
         </div>
+        
     <div class="container py-4">
-        <div class="text-center mb-4">
-            <h1 class="display-4">Budget ZA</h1>
-            <p class="lead">Your South African Budget Tracker</p>
+        <div class="mb-4 d-flex">
+            <img src="/images//logo.png" style="max-height:100px;"/>
         </div>
 
         <div class="row">
