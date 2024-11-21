@@ -92,4 +92,11 @@ export class CookieConsent {
         backdrop.className = 'modal-backdrop fade show';
         document.body.appendChild(backdrop);
     }
+
+    static hidePrivacyPolicy() {
+        const modal = document.querySelector('.modal');
+        const backdrop = document.querySelector('.modal-backdrop');
+        if (modal) document.body.removeChild(modal);
+        if (backdrop) document.body.removeChild(backdrop);
+    }
 }

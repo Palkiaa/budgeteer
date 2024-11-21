@@ -1,4 +1,5 @@
 import { TaxCalculator } from "./taxCalculator";
+
 export class BudgetTracker {
     constructor() {
         this.expenses = [];
@@ -9,89 +10,83 @@ export class BudgetTracker {
         this.initSalaryInputListener();
     }
 
-
     getGroceries() {
         const groc = this.groceries;
         return groc;
     }
+
     removeGrocery(index) {
         this.groceries.splice(index, 1);
         this.saveData();
     }
+
     addGroceries(grocery) {
         grocery.groc = [];
         this.groceries.push(grocery);
         this.saveData();
     }
 
+    initSalaryInputListener() {
+        const salaryInput = document.getElementById('salary');
+        if (salaryInput) {
+            let salaryTimeout;
+            salaryInput.addEventListener('input', (e) => {
+                clearTimeout(salaryTimeout);
+                salaryTimeout = setTimeout(() => {
+                    const grossSalary = parseFloat(e.target.value) || 0;
+                    this.updateSalaryDetails(grossSalary);
+                }, 300);
+            });
+        }
+    }
 
-        /**
-     * Initializes the salary input listener to dynamically update salary details.
-     */
-        initSalaryInputListener() {
-            const salaryInput = document.getElementById('salary');
-            if (salaryInput) {
-                let salaryTimeout;
-                salaryInput.addEventListener('input', (e) => {
-                    clearTimeout(salaryTimeout);
-                    salaryTimeout = setTimeout(() => {
-                        const grossSalary = parseFloat(e.target.value) || 0;
-                        this.updateSalaryDetails(grossSalary);
-                    }, 300);
-                });
-            }
+    updateSalaryDetails(grossSalary) {
+        this.updateSalary(grossSalary);
+        const ageCategory = document.getElementById('ageCategory').value;
+        let age;
+        switch(ageCategory) {
+            case 'under65': age = 30; break;
+            case '65to74': age = 70; break;
+            case '75andOver': age = 80; break;
         }
     
-        /**
-         * Updates salary details, including tax, UIF, and net salary, and updates the UI.
-         * @param {number} grossSalary - The gross monthly salary.
-         */
-        updateSalaryDetails(grossSalary) {
-            this.updateSalary(grossSalary);
-            const ageCategory = document.getElementById('ageCategory').value;
-            let age;
-            switch(ageCategory) {
-                case 'under65': age = 30; break;
-                case '65to74': age = 70; break;
-                case '75andOver': age = 80; break;
-            }
+        const { tax, UIF, netSalary } = TaxCalculator.calculateNetSalary(grossSalary, age);
+        const annualIncome = grossSalary * 12;
+        this.updateNetSalary(netSalary);
         
-            const { tax, UIF, netSalary } = TaxCalculator.calculateNetSalary(grossSalary, age);
-            const annualIncome = grossSalary * 12;
-             this.updateNetSalary(netSalary);
-            let taxMessage = '';
-            if (tax === 0) {
-                if (age < 65 && annualIncome <= TaxCalculator.TAX_THRESHOLDS.under65) {
-                    taxMessage = `You don't pay income tax because your annual income (R${annualIncome.toFixed(2)}) is below the tax threshold of R${TaxCalculator.TAX_THRESHOLDS.under65} for your age group.`;
-                } else if (age >= 65 && age < 75 && annualIncome <= TaxCalculator.TAX_THRESHOLDS.under75) {
-                    taxMessage = `You don't pay income tax because your annual income (R${annualIncome.toFixed(2)}) is below the tax threshold of R${TaxCalculator.TAX_THRESHOLDS.under75} for your age group.`;
-                } else if (age >= 75 && annualIncome <= TaxCalculator.TAX_THRESHOLDS.over75) {
-                    taxMessage = `You don't pay income tax because your annual income (R${annualIncome.toFixed(2)}) is below the tax threshold of R${TaxCalculator.TAX_THRESHOLDS.over75} for your age group.`;
-                }
-            } else {
-                taxMessage = `You pay income tax because your annual income (R${annualIncome.toFixed(2)}) is above the tax threshold for your age group.`;
+        let taxMessage = '';
+        if (tax === 0) {
+            if (age < 65 && annualIncome <= TaxCalculator.TAX_THRESHOLDS.under65) {
+                taxMessage = `You don't pay income tax because your annual income (R${annualIncome.toFixed(2)}) is below the tax threshold of R${TaxCalculator.TAX_THRESHOLDS.under65} for your age group.`;
+            } else if (age >= 65 && age < 75 && annualIncome <= TaxCalculator.TAX_THRESHOLDS.under75) {
+                taxMessage = `You don't pay income tax because your annual income (R${annualIncome.toFixed(2)}) is below the tax threshold of R${TaxCalculator.TAX_THRESHOLDS.under75} for your age group.`;
+            } else if (age >= 75 && annualIncome <= TaxCalculator.TAX_THRESHOLDS.over75) {
+                taxMessage = `You don't pay income tax because your annual income (R${annualIncome.toFixed(2)}) is below the tax threshold of R${TaxCalculator.TAX_THRESHOLDS.over75} for your age group.`;
             }
-        
-            const salaryDetails = document.getElementById('salaryDetails');
-            if (salaryDetails) {
-                salaryDetails.innerHTML = `
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <p class="mb-1"><strong>Monthly Tax:</strong> R${parseFloat(tax).toFixed(2)}</p>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="mb-1"><strong>Net Salary:</strong> R${parseFloat(netSalary).toFixed(2)} 
-                            <span class="text-muted">(UIF: R${parseFloat(UIF).toFixed(2)})</span></p>
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-12">
-                            <p class="mb-1 text-info">${taxMessage}</p>
-                        </div>
-                    </div>
-                `;
-            }
+        } else {
+            taxMessage = `You pay income tax because your annual income (R${annualIncome.toFixed(2)}) is above the tax threshold for your age group.`;
         }
+    
+        const salaryDetails = document.getElementById('salaryDetails');
+        if (salaryDetails) {
+            salaryDetails.innerHTML = `
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="mb-1"><strong>Monthly Tax:</strong> R${parseFloat(tax).toFixed(2)}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-1"><strong>Net Salary:</strong> R${parseFloat(netSalary).toFixed(2)} 
+                        <span class="text-muted">(UIF: R${parseFloat(UIF).toFixed(2)})</span></p>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <p class="mb-1 text-info">${taxMessage}</p>
+                    </div>
+                </div>
+            `;
+        }
+    }
 
     addExpense(expense) {
         expense.subExpenses = [];
@@ -141,7 +136,6 @@ export class BudgetTracker {
         this.saveData();
     }
 
-
     getTotalIncome() {
         const additionalIncome = this.additionalIncomes?.reduce((sum, income) => sum + (income.amount || 0), 0) || 0;
         return (this.netSalary || 0) + additionalIncome;
@@ -165,13 +159,11 @@ export class BudgetTracker {
         const balance = this.getBalance();
         const savingsRate = totalIncome > 0 ? (balance / totalIncome) * 100 : 0;
 
-        // Income vs Expenses Analysis
         if (totalExpenses > totalIncome) {
             analysis.push("⚠️ Your expenses exceed your income. This is unsustainable long-term.");
             analysis.push("💡 Consider reducing non-essential expenses or finding additional income sources.");
         }
 
-        // Savings Rate Analysis
         if (savingsRate < 0) {
             analysis.push("🚨 You're in a deficit spending situation.");
         } else if (savingsRate < 20) {
@@ -183,7 +175,6 @@ export class BudgetTracker {
             analysis.push("🌟 Excellent savings rate! Consider investing your surplus.");
         }
 
-        // Category Analysis
         const categoryTotals = {};
         this.expenses.forEach(expense => {
             if (!categoryTotals[expense.category]) {
@@ -193,7 +184,6 @@ export class BudgetTracker {
             categoryTotals[expense.category] += (expense.amount || 0) + subExpenseTotal;
         });
 
-        // Check category percentages
         if (totalIncome > 0) {
             Object.entries(categoryTotals).forEach(([category, amount]) => {
                 const percentage = (amount / totalIncome) * 100;
@@ -239,7 +229,8 @@ export class BudgetTracker {
             expenses: this.expenses,
             additionalIncomes: this.additionalIncomes,
             salary: this.salary,
-            netSalary: this.netSalary
+            netSalary: this.netSalary,
+            groceries: this.groceries
         }));
     }
 
@@ -254,6 +245,7 @@ export class BudgetTracker {
                 }));
                 this.additionalIncomes = data.additionalIncomes || [];
                 this.salary = data.salary || 0;
+                this.groceries = data.groceries || [];
                 if (this.salary !== 0) {
                     this.updateSalaryDetails(parseFloat(this.salary));
                 }
@@ -263,6 +255,7 @@ export class BudgetTracker {
             this.expenses = [];
             this.additionalIncomes = [];
             this.salary = 0;
+            this.groceries = [];
         }
     }
 }

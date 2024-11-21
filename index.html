@@ -7,7 +7,7 @@
         <meta name="description" content="Track your budget easily with BudgetZA, an intuitive financial management tool to help you stay on top of your finances.">
         <meta name="keywords" content="budget tracker, finance, budget management, financial app, personal finance, budgeting, PWA">
         <meta name="author" content="BudgetZA Team">
-        
+        <meta name="google-site-verification" content="BmXcN2Js1mQhG6y3Ej3bh99719blKLlOHfY0_lvImqc" />
         <title>BudgetZA - Budget Tracker</title>
         <!-- Linking Stylesheets -->
         <link rel="stylesheet" href="style.css">
@@ -41,11 +41,11 @@
 <body>
     <div class="container py-4">
         <!-- PWA Install Prompt -->
-        <div id="pwaInstall" class="d-none" >
-            <p><strong>Install App!</strong> Add Budget ZA to your home screen for quick access.</p><button id="pwaInstallBtn" class="btn btn-outline-primary btn-sm">Install</button>
+        <div id="pwaInstall" style="padding-left: 20px; display: flex; align-items: center;" >
+            <p><strong>Install App!</strong> Add Budget ZA to your home screen for quick access...</p><a id="pwaInstallBtn" style="color: black;cursor: pointer;">Install</a>
         </div>
         
-    <div class="container py-4">
+    <div class="container p-2">
         <div class="mb-4 d-flex">
             <img src="/assets//logo.png" style="max-height:100px;"/>
         </div>
@@ -57,7 +57,7 @@
                         <h2 class="h5 mb-0">Income</h2>
                     </div>
                     <div class="card-body">
-                        <div class="mb-3">
+                        <div class="mb-3 p-2">
                             <label for="salary" class="form-label">
                                 Gross Monthly Salary (Before Tax) (R)
                                 <span 
@@ -117,6 +117,7 @@
                                 <option value="other">Other</option>
                             </select>
                         </div>
+                        <div></div>
                         <button id="addExpenseBtn" class="btn btn-primary">Add Expense</button>
                     </div>
                 </div>
@@ -231,10 +232,15 @@
         </div>
     </div>
 
-    <div id="installBanner" style="display:none;">
-        <p>To install the app, click the Share button in Safari and choose "Add to Home Screen".</p>
-        <button id="closeInstallBanner">Close</button>
+    <div id="installBanner" style="display:none; border: 1px solid #ccc; border-radius: 8px; padding: 15px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); z-index: 1000;">
+        <p style="margin: 0; font-size: 16px; color: #333;">
+          To install the app, tap the <strong>Share</strong> button in Safari and select <strong>"Add to Home Screen"</strong>.
+        </p>
+        <button id="closeInstallBanner" style="margin-top: 10px; background: #007aff; color: #fff; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+          Close
+        </button>
       </div>
+      
       
       
 

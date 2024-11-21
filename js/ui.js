@@ -160,6 +160,7 @@ export class UI {
     }
 
     displaySummary(data) {
+        console.log(data)
         const summary = document.getElementById('summary');
         summary.innerHTML = `
             <h2>Summary</h2>

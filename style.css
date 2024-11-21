@@ -28,7 +28,7 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 10px;
     background-color: var(--background-color);
     color: var(--text-color);
     line-height: 1.6;
@@ -176,7 +176,7 @@ label {
 }
 
 input, select {
-    width: 100%;
+    width: 90%;
     padding: 0.8rem;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -187,6 +187,7 @@ button {
     background-color: var(--secondary-color);
     color: white;
     padding: 0.8rem 1.5rem;
+    margin-top:20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -347,4 +348,166 @@ button:hover {
     padding: 1.5rem;
     background-color: #f8f9fa;
     border-radius: 4px;
+}
+
+/* Add to your existing CSS */
+.nav-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.burger-menu {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.burger-menu span {
+    width: 100%;
+    height: 2px;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.side-nav {
+    position: fixed;
+    top: 60px;
+    left: -250px;
+    width: 250px;
+    height: calc(100vh - 60px);
+    background: white;
+    transition: left 0.3s ease;
+    z-index: 1000;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    overflow-y: auto;
+}
+
+.side-nav.open {
+    left: 0;
+}
+
+.nav-overlay {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    z-index: 999;
+}
+
+.nav-overlay.show {
+    display: block;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    color: var(--text-color);
+    text-decoration: none;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background-color: #f8f9fa;
+}
+
+.nav-link i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.page {
+    display: none;
+    padding-top: 70px;
+}
+
+#budgetPage {
+    display: block;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .container {
+        padding: 1px;
+    }
+
+    .card {
+        margin-bottom: 1rem;
+    }
+
+    .chart-container {
+        flex-direction: column;
+    }
+
+    #expenseChart,
+    #chartLegend {
+        width: 90%;
+        margin-bottom: 1rem;
+    }
+
+    .expense-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 5% auto;
+    }
+}
+
+/* iOS Specific Styles */
+@supports (-webkit-touch-callout: none) {
+    .nav-header {
+        padding-top: env(safe-area-inset-top);
+        height: calc(60px + env(safe-area-inset-top));
+    }
+
+    .side-nav {
+        top: calc(60px + env(safe-area-inset-top));
+        height: calc(100vh - 60px - env(safe-area-inset-top));
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .page {
+        padding-top: calc(70px + env(safe-area-inset-top));
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}
+
+/* PWA Install Banner */
+.install-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 1rem;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    display: none;
+    z-index: 1000;
+}
+
+.install-banner.show {
+    display: block;
 }

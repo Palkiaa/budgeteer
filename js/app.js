@@ -3,6 +3,7 @@ import { UI } from './ui.js';
 import { ExpenseChart } from './chart.js';
 import { TaxCalculator } from './taxCalculator.js';
 import { CookieConsent } from './cookieConsent.js';
+import { Navigation } from './navigation.js';
 import { registerSW } from 'virtual:pwa-register';
 
 // Register Service Worker
@@ -11,25 +12,87 @@ if ('serviceWorker' in navigator) {
         immediate: true
     });
 }
-
-
-let deferredPrompt; // Declare deferredPrompt variable
-
-// Define global functions before DOMContentLoaded
-window.acceptCookies = () => CookieConsent.accept();
-window.rejectCookies = () => CookieConsent.reject();
-window.closePrivacyPolicy = () => CookieConsent.hidePrivacyPolicy();
-window.privacyPolicy = () => CookieConsent.showPrivacyPolicy();
-
+   // Handle PWA installation
+    let deferredPrompt;
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize cookie consent
-    CookieConsent.init();
+    // Initialize navigation
+    const navigation = new Navigation();
 
-    // Initialize main components
+    // Initialize other components
     const budgetTracker = new BudgetTracker();
     const ui = new UI();
     const chart = new ExpenseChart();
+    
+    // Initialize cookie consent
+    CookieConsent.init();
 
+    // Load saved data
+    budgetTracker.loadData();
+    
+    // Initialize Bootstrap tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(tooltipTriggerEl => {
+        new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    // Event Listeners
+    document.getElementById('addExpenseBtn').addEventListener('click', () => {
+        const expense = ui.getExpenseInput();
+        if (expense) {
+            budgetTracker.addExpense(expense);
+            ui.displayData(budgetTracker.getData());
+            chart.updateChart(budgetTracker.getData());
+            ui.clearExpenseInput();
+        }
+    });
+
+    document.addEventListener('addSubExpense', (e) => {
+        const { parentIndex, subExpense } = e.detail;
+        budgetTracker.addSubExpense(parentIndex, subExpense);
+        ui.displayData(budgetTracker.getData());
+        chart.updateChart(budgetTracker.getData());
+    });
+
+    document.addEventListener('removeSubExpense', (e) => {
+        const { parentIndex, subIndex } = e.detail;
+        budgetTracker.removeSubExpense(parentIndex, subIndex);
+        ui.displayData(budgetTracker.getData());
+        chart.updateChart(budgetTracker.getData());
+    });
+
+    document.getElementById('addIncomeBtn').addEventListener('click', () => {
+        ui.showIncomeModal();
+    });
+
+    document.getElementById('submitIncomeBtn').addEventListener('click', () => {
+        const income = ui.getIncomeInput();
+        if (income) {
+            budgetTracker.addIncome(income);
+            ui.displayData(budgetTracker.getData());
+            chart.updateChart(budgetTracker.getData());
+            ui.hideIncomeModal();
+        }
+    });
+
+    document.getElementById('salary').addEventListener('input', (e) => {
+        budgetTracker.updateSalary(parseFloat(e.target.value) || 0);
+        ui.displayData(budgetTracker.getData());
+        chart.updateChart(budgetTracker.getData());
+    });
+
+    document.addEventListener('removeExpense', (e) => {
+        budgetTracker.removeExpense(e.detail);
+        ui.displayData(budgetTracker.getData());
+        chart.updateChart(budgetTracker.getData());
+    });
+
+    document.addEventListener('removeIncome', (e) => {
+        budgetTracker.removeIncome(e.detail);
+        ui.displayData(budgetTracker.getData());
+        chart.updateChart(budgetTracker.getData());
+    });
+
+ 
     function initPWA() {
         const installButton = document.getElementById('pwaInstallBtn');
       
@@ -94,95 +157,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       
       initPWA();
-      
 
-    // Load saved data
-    budgetTracker.loadData();
-    
-    // Ensure DOM elements exist before updating
-    requestAnimationFrame(() => {
-        ui.displayData(budgetTracker.getData());
-        chart.updateChart(budgetTracker.getData());
-    });
-
-    let salaryTimeout;
-    // Handle user typing dynamically
-    document.getElementById('salary')?.addEventListener('input', (e) => {
-        clearTimeout(salaryTimeout);
-        salaryTimeout = setTimeout(() => {
-            const grossSalary = parseFloat(e.target.value) || 0;
-            budgetTracker.updateSalaryDetails(grossSalary);
-        }, 300);
-    });
-
-    var tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
-        new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-
-    // Event listeners for expense management
-    document.getElementById('addExpenseBtn')?.addEventListener('click', () => {
-        const expense = ui.getExpenseInput();
-        if (expense) {
-            budgetTracker.addExpense(expense);
-            ui.displayData(budgetTracker.getData());
-            chart.updateChart(budgetTracker.getData());
-            ui.clearExpenseInput();
-        }
-    });
-
-    document.addEventListener('addSubExpense', (e) => {
-        const { parentIndex, subExpense } = e.detail;
-        budgetTracker.addSubExpense(parentIndex, subExpense);
-        ui.displayData(budgetTracker.getData());
-        chart.updateChart(budgetTracker.getData());
-    });
-
-    document.addEventListener('removeSubExpense', (e) => {
-        const { parentIndex, subIndex } = e.detail;
-        budgetTracker.removeSubExpense(parentIndex, subIndex);
-        ui.displayData(budgetTracker.getData());
-        chart.updateChart(budgetTracker.getData());
-    });
-
-    // Income management
-    document.getElementById('addIncomeBtn')?.addEventListener('click', () => {
-        ui.showIncomeModal();
-    });
-
-    document.getElementById('submitIncomeBtn')?.addEventListener('click', () => {
-        const income = ui.getIncomeInput();
-        if (income) {
-            budgetTracker.addIncome(income);
-            ui.displayData(budgetTracker.getData());
-            chart.updateChart(budgetTracker.getData());
-            ui.clearIncomeInput();
-            ui.hideIncomeModal();
-        }
-    });
-
-    document.addEventListener('removeIncome', (e) => {
-        budgetTracker.removeIncome(e.detail);
-        ui.displayData(budgetTracker.getData());
-        chart.updateChart(budgetTracker.getData());
-    });
-
-    // Modal handling
-    window.addEventListener('click', (e) => {
-        if (e.target.classList.contains('modal')) {
-            ui.hideIncomeModal();
-        }
-    });
-
-    document.querySelector('.close')?.addEventListener('click', () => {
-        ui.hideIncomeModal();
-    });
-
-       
+    // Grocery List Functionality
     document.getElementById('viewGroceryList').addEventListener('click', () => {
         document.getElementById('groceryModal').style.display = 'block';
     });
-
+    
     document.getElementById('closeGroceryModal').addEventListener('click', () => {
         document.getElementById('groceryModal').style.display = 'none';
     });
@@ -209,32 +189,29 @@ document.addEventListener('DOMContentLoaded', () => {
             tbody.appendChild(row);
         });
     }
-    
+
     window.removeGrocery = function (index) {
-        const groceries = budgetTracker.getGroceries();
-        groceries.splice(index, 1); // Remove the grocery item at the specified index
-        budgetTracker.saveData(); // Save updated list to localStorage
-        renderGroceryList(); // Re-render the list
+        budgetTracker.removeGrocery(index);
+        renderGroceryList();
     };
-    
     
     window.updateQuantity = function(index, change) {
         const groceries = budgetTracker.getGroceries();
-        if(!groceries[index].done){
+        if(!groceries[index].done) {
             if (groceries[index].quantity + change > 0) {
                 groceries[index].quantity += change;
                 budgetTracker.saveData();
                 renderGroceryList();
             }
         }
-    }
+    };
     
     window.toggleDone = function(index) {
         const groceries = budgetTracker.getGroceries();
         groceries[index].done = !groceries[index].done;
         budgetTracker.saveData();
         renderGroceryList();
-    }
+    };
     
     document.getElementById('saveGroceryItem').addEventListener('click', () => {
         const name = document.getElementById('groceryName').value.trim();
@@ -261,6 +238,6 @@ document.addEventListener('DOMContentLoaded', () => {
         renderGroceryList();
     });
     
-    // Render the list on page load
+    // Initial render
     renderGroceryList();
 });
