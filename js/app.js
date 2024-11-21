@@ -3,7 +3,7 @@ import { UI } from './ui.js';
 import { ExpenseChart } from './chart.js';
 import { TaxCalculator } from './taxCalculator.js';
 import { CookieConsent } from './cookieConsent.js';
-import { Navigation } from './navigation.js';
+import { MyNavigation } from './navigation.js';
 import { registerSW } from 'virtual:pwa-register';
 
 // Register Service Worker
@@ -14,9 +14,15 @@ if ('serviceWorker' in navigator) {
 }
    // Handle PWA installation
     let deferredPrompt;
+
+    window.acceptCookies = () => CookieConsent.accept();
+    window.rejectCookies = () => CookieConsent.reject();
+    window.closePrivacyPolicy = () => CookieConsent.hidePrivacyPolicy();
+    window.privacyPolicy = () => CookieConsent.showPrivacyPolicy();
+    window.navigationTo = (val) => MyNavigation.navigateTo(val);
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize navigation
-    const navigation = new Navigation();
+    const navigation = new MyNavigation();
 
     // Initialize other components
     const budgetTracker = new BudgetTracker();
@@ -91,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ui.displayData(budgetTracker.getData());
         chart.updateChart(budgetTracker.getData());
     });
-
  
     function initPWA() {
         const installButton = document.getElementById('pwaInstallBtn');
@@ -155,8 +160,8 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         }
       }
-      
-      initPWA();
+     initPWA();
+
 
     // Grocery List Functionality
     document.getElementById('viewGroceryList').addEventListener('click', () => {

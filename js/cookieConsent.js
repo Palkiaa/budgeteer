@@ -40,63 +40,28 @@ export class CookieConsent {
     }
 
     static showPrivacyPolicy() {
-        const modal = document.createElement('div');
-        modal.className = 'modal fade show';
-        modal.style.display = 'block';
-        modal.innerHTML = `
-            <div class="modal-dialog modal-dialog-scrollable modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Privacy Policy</h5>
-                        <button type="button" class="btn-close" onclick="window.closePrivacyPolicy()"></button>
-                    </div>
-                    <div class="modal-body">
-                        <h2>Privacy Policy for Budget ZA</h2>
-                        <p>Last updated: ${new Date().toLocaleDateString()}</p>
+        const modal = document.getElementById('privacy-policy-modal');
+        const backdrop = document.getElementById('modal-backdrop');
 
-                        <h3>1. Introduction</h3>
-                        <p>Budget ZA ("we", "our", or "us") respects your privacy and is committed to protecting it through our compliance with POPIA (Protection of Personal Information Act).</p>
-
-                        <h3>2. Information We Don't Collect</h3>
-                        <p>We do not collect, store, or process any personal information. All data is stored locally on your device.</p>
-
-                        <h3>3. Cookies</h3>
-                        <p>We use only essential cookies to remember your preferences and provide basic functionality. No tracking or marketing cookies are used.</p>
-
-                        <h3>4. POPIA Compliance</h3>
-                        <p>We adhere to all POPIA principles:
-                            <ul>
-                                <li>Accountability: We take responsibility for data protection</li>
-                                <li>Processing Limitation: We only process what's necessary</li>
-                                <li>Purpose Specification: Cookies are used only for functionality</li>
-                                <li>Further Processing Limitation: No data sharing or selling</li>
-                                <li>Information Quality: All data stays on your device</li>
-                                <li>Openness: Full transparency about our practices</li>
-                                <li>Security Safeguards: Local storage only</li>
-                                <li>Data Subject Participation: You control your data</li>
-                            </ul>
-                        </p>
-
-                        <h3>5. Advertising</h3>
-                        <p>We may display ads to keep this service free. These ads are managed by third parties and do not use your personal data.</p>
-
-                        <h3>6. Contact</h3>
-                        <p>For any privacy-related questions, please contact us at privacy@budgetza.co.za</p>
-                    </div>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-
-        const backdrop = document.createElement('div');
-        backdrop.className = 'modal-backdrop fade show';
-        document.body.appendChild(backdrop);
+        if (modal && backdrop) {
+            modal.classList.add('show');
+            modal.style.display = 'flex';
+            backdrop.classList.add('show');
+            backdrop.style.display = 'block';
+        }
     }
 
     static hidePrivacyPolicy() {
-        const modal = document.querySelector('.modal');
-        const backdrop = document.querySelector('.modal-backdrop');
-        if (modal) document.body.removeChild(modal);
-        if (backdrop) document.body.removeChild(backdrop);
+        const modal = document.getElementById('privacy-policy-modal');
+        const backdrop = document.getElementById('modal-backdrop');
+
+        if (modal) {
+            modal.classList.remove('show');
+            modal.style.display = 'none';
+        }
+        if (backdrop) {
+            backdrop.classList.remove('show');
+            backdrop.style.display = 'none';
+        }
     }
 }

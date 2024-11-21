@@ -1,0 +1,51 @@
+/* Style for Privacy Policy Modal */
+#privacy-policy-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    z-index: 999;
+    overflow: auto;
+}
+
+#privacy-policy-dialog {
+    position: relative;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#privacy-policy-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#privacy-policy-back {
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.side-nav {
+    display: none;
+}
+
+.side-nav.open {
+    display: block;
+}
+
+#navOverlay.show {
+    display: block;
+}
+
+#privacy-policy-body ul {
+    margin-left: 20px;
+}

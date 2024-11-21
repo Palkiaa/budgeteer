@@ -151,6 +151,63 @@ body {
     }
 }
 
+/* Basic modal setup */
+#cookieConsentModal .modal-dialog {
+    max-width: 500px; /* Set a max width for the modal */
+    margin: 0 auto; /* Center the modal horizontally */
+    position: absolute; /* Use absolute positioning */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust position to truly center */
+}
+
+/* Ensure modal is centered properly */
+.modal-dialog-centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Responsive modal dialog on smaller screens */
+@media (max-width: 767px) {
+    #cookieConsentModal .modal-dialog {
+        width: 90%; /* Take up 90% of the screen on small devices */
+        top: 50%; /* Ensure it remains centered vertically on smaller screens */
+        left: 50%; /* Ensure it remains centered horizontally */
+        transform: translate(-50%, -50%); /* Ensure exact centering */
+    }
+}
+
+/* Flexbox for footer to space out buttons */
+#cookieConsentFooter {
+    display: flex;
+    justify-content: space-between; /* Space out the buttons */
+    width: 100%;
+}
+
+/* Red "Reject" button */
+#rejectCookiesBtn {
+    background-color: red;
+    border-color: red;
+}
+
+/* Optional: Style the buttons with a margin */
+#cookieConsentFooter button {
+    margin: 5px;
+}
+
+/* Optional: Style the backdrop */
+#cookieModalBackdrop {
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+    display: none;
+}
+
+#cookieModalBackdrop.show {
+    display: block;
+}
+
+
 .container {
     max-width: 1000px;
     margin: 0 auto;
@@ -350,101 +407,6 @@ button:hover {
     border-radius: 4px;
 }
 
-/* Add to your existing CSS */
-.nav-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    background: var(--primary-color);
-    color: white;
-    display: flex;
-    align-items: center;
-    padding: 0 1rem;
-    z-index: 1000;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.burger-menu {
-    width: 30px;
-    height: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    cursor: pointer;
-    padding: 5px;
-}
-
-.burger-menu span {
-    width: 100%;
-    height: 2px;
-    background: white;
-    transition: all 0.3s ease;
-}
-
-.side-nav {
-    position: fixed;
-    top: 60px;
-    left: -250px;
-    width: 250px;
-    height: calc(100vh - 60px);
-    background: white;
-    transition: left 0.3s ease;
-    z-index: 1000;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-    overflow-y: auto;
-}
-
-.side-nav.open {
-    left: 0;
-}
-
-.nav-overlay {
-    position: fixed;
-    top: 60px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.5);
-    display: none;
-    z-index: 999;
-}
-
-.nav-overlay.show {
-    display: block;
-}
-
-.nav-link {
-    display: flex;
-    align-items: center;
-    padding: 1rem;
-    color: var(--text-color);
-    text-decoration: none;
-    border-bottom: 1px solid #eee;
-    transition: background-color 0.3s ease;
-}
-
-.nav-link:hover,
-.nav-link.active {
-    background-color: #f8f9fa;
-}
-
-.nav-link i {
-    margin-right: 10px;
-    width: 20px;
-    text-align: center;
-}
-
-.page {
-    display: none;
-    padding-top: 70px;
-}
-
-#budgetPage {
-    display: block;
-}
-
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .container {
@@ -510,4 +472,185 @@ button:hover {
 
 .install-banner.show {
     display: block;
+}
+
+#privacy-policy-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1050;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+#privacy-policy-modal.show {
+    display: flex;
+}
+
+#privacy-policy-dialog {
+    max-width: 800px;
+    margin: auto;
+    width: 90%; /* Responsive width for smaller screens */
+}
+
+#privacy-policy-content {
+    background: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+    max-height: 90vh; /* Ensure the modal doesn't overflow the screen */
+    display: flex;
+    flex-direction: column;
+}
+
+#privacy-policy-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    border-bottom: 1px solid #ddd;
+    background: #f9f9f9;
+}
+
+#privacy-policy-title {
+    margin: 0;
+    font-size: 18px;
+}
+
+#privacy-policy-close {
+    border: none;
+    background: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#privacy-policy-body {
+    padding: 15px;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-y: auto; /* Add scroll for long content */
+}
+
+#modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+    display: none;
+}
+
+#modal-backdrop.show {
+    display: block;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    #privacy-policy-dialog {
+        width: 95%; /* Slightly smaller width for mobile */
+    }
+
+    #privacy-policy-header {
+        flex-direction: column; /* Stack title and close button */
+        align-items: flex-start;
+    }
+
+    #privacy-policy-title {
+        font-size: 16px; /* Smaller font for mobile */
+        margin-bottom: 10px;
+    }
+
+    #privacy-policy-close {
+        align-self: flex-end;
+    }
+
+    #privacy-policy-body {
+        font-size: 13px; /* Adjust font size for mobile readability */
+    }
+}
+
+.navbar {
+    background-color: #ffffff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    z-index: 200;
+    align-items: center;
+    color: black;
+}
+
+.navbar-toggle {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.side-nav {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    z-index: 200;
+    background-color: #ffffff;
+    transition: left 0.3s ease;
+    padding-top: 60px;
+}
+
+.side-nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.side-nav ul li {
+    padding: 15px 20px;
+}
+
+.side-nav ul li a {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    cursor: pointer;
+    display: block;
+}
+
+.side-nav ul li a:hover, .side-nav ul li a.active {
+    background-color: white;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+}
+
+.side-nav.open {
+    left: 0;
+}
+
+.overlay.show {
+    display: block;
+}
+
+/* For Small Screens (Responsive) */
+@media (max-width: 768px) {
+    .side-nav {
+        left: -250px;
+    }
+
+    .side-nav.open {
+        left: 0;
+    }
+
+    .overlay.show {
+        display: block;
+    }
 }
