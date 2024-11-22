@@ -10,7 +10,7 @@ export class ExpenseChart {
     updateChart(data) {
         const ctx = document.getElementById('expenseChart').getContext('2d');
         const expenses = this.processExpenseData(data.expenses);
-        
+        this.updateLegend(expenses);
         if (this.chartInstance) {
             this.chartInstance.destroy();
         }
@@ -38,6 +38,7 @@ export class ExpenseChart {
     }
 
     processExpenseData(expenses) {
+       
         const categories = {};
         
         expenses.forEach(expense => {
@@ -55,10 +56,12 @@ export class ExpenseChart {
     }
 
     updateLegend(expenses) {
+        console.log(expenses)
         const legend = document.getElementById('chartLegend');
         legend.innerHTML = '<h3>Expense Categories</h3>';
         
         expenses.labels.forEach((label, index) => {
+            console.log(label, index);
             const item = document.createElement('div');
             item.style.marginBottom = '8px';
             item.innerHTML = `

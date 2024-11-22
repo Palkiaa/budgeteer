@@ -15,13 +15,17 @@ export class MyNavigation {
         burgerMenu?.addEventListener('click', () => {
             sideNav?.classList.toggle('open');
             overlay?.classList.toggle('show');
+            sideNav?.classList.toggle('hidden');
+            overlay?.classList.remove('hidden');
             document.body.style.overflow = sideNav?.classList.contains('open') ? 'hidden' : '';
         });
 
         // Close side nav and overlay when overlay is clicked
         overlay?.addEventListener('click', () => {
             sideNav?.classList.remove('open');
+            sideNav?.classList.add('hidden');
             overlay?.classList.remove('show');
+            overlay?.classList.add('hidden');
             document.body.style.overflow = '';
         });
     }

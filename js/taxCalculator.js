@@ -64,6 +64,9 @@ export class TaxCalculator {
 
         // Calculate final net salary
         const netSalary = grossMonthlySalary - monthlyTax - UIF - pensionContribution;
+        const netSalaryInput = document.getElementById('netSalaryInput');
+
+        netSalaryInput.value = parseFloat(netSalary).toFixed(2);
 
         return {
             grossSalary: grossMonthlySalary,

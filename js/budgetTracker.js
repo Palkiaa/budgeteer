@@ -1,4 +1,4 @@
-import { TaxCalculator } from "./taxCalculator";
+import { TaxCalculator } from "./taxCalculator.js";
 
 export class BudgetTracker {
     constructor() {
@@ -6,6 +6,7 @@ export class BudgetTracker {
         this.additionalIncomes = [];
         this.salary = 0;
         this.netSalary = 0;
+        this.useTax = true;
         this.groceries = [];
         this.initSalaryInputListener();
     }
@@ -42,12 +43,13 @@ export class BudgetTracker {
 
     updateSalaryDetails(grossSalary) {
         this.updateSalary(grossSalary);
-        const ageCategory = document.getElementById('ageCategory').value;
+        const ageCategory = document.getElementById('ageCategory')?.value || 'under65';
         let age;
         switch(ageCategory) {
             case 'under65': age = 30; break;
             case '65to74': age = 70; break;
             case '75andOver': age = 80; break;
+            default: age = 30;
         }
     
         const { tax, UIF, netSalary } = TaxCalculator.calculateNetSalary(grossSalary, age);
@@ -68,6 +70,17 @@ export class BudgetTracker {
         }
     
         const salaryDetails = document.getElementById('salaryDetails');
+        const netSalaryInput = document.getElementById('netSalaryInput');
+        if(!netSalaryInput.value){
+            netSalaryInput.value = parseFloat(netSalary).toFixed(2);
+        }
+        const grossSalaryInput = document.getElementById('salary');
+        if(!grossSalaryInput.value){
+            grossSalaryInput.value = parseFloat(grossSalary).toFixed(2);
+        }
+       
+
+
         if (salaryDetails) {
             salaryDetails.innerHTML = `
                 <div class="row">
@@ -86,6 +99,11 @@ export class BudgetTracker {
                 </div>
             `;
         }
+    }
+
+    setUseTax(value) {
+        this.useTax = value;
+        this.saveData();
     }
 
     addExpense(expense) {
@@ -137,8 +155,9 @@ export class BudgetTracker {
     }
 
     getTotalIncome() {
+        let baseSalary = this.useTax ? this.netSalary : this.salary;
         const additionalIncome = this.additionalIncomes?.reduce((sum, income) => sum + (income.amount || 0), 0) || 0;
-        return (this.netSalary || 0) + additionalIncome;
+        return (baseSalary || 0) + additionalIncome;
     }
 
     getTotalExpenses() {
@@ -230,6 +249,7 @@ export class BudgetTracker {
             additionalIncomes: this.additionalIncomes,
             salary: this.salary,
             netSalary: this.netSalary,
+            useTax: this.useTax,
             groceries: this.groceries
         }));
     }
@@ -245,6 +265,8 @@ export class BudgetTracker {
                 }));
                 this.additionalIncomes = data.additionalIncomes || [];
                 this.salary = data.salary || 0;
+                this.netSalary = data.netSalary || 0;
+                this.useTax = data.useTax !== false; // Default to true
                 this.groceries = data.groceries || [];
                 if (this.salary !== 0) {
                     this.updateSalaryDetails(parseFloat(this.salary));
@@ -255,6 +277,8 @@ export class BudgetTracker {
             this.expenses = [];
             this.additionalIncomes = [];
             this.salary = 0;
+            this.netSalary = 0;
+            this.useTax = true;
             this.groceries = [];
         }
     }

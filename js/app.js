@@ -4,6 +4,8 @@ import { ExpenseChart } from './chart.js';
 import { TaxCalculator } from './taxCalculator.js';
 import { CookieConsent } from './cookieConsent.js';
 import { MyNavigation } from './navigation.js';
+import tippy from 'tippy.js';
+import 'tippy.js/dist/tippy.css';
 import { registerSW } from 'virtual:pwa-register';
 
 // Register Service Worker
@@ -23,7 +25,7 @@ if ('serviceWorker' in navigator) {
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize navigation
     const navigation = new MyNavigation();
-
+    initPWA();
     // Initialize other components
     const budgetTracker = new BudgetTracker();
     const ui = new UI();
@@ -32,23 +34,107 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize cookie consent
     CookieConsent.init();
 
+    initializeTooltips();
+
     // Load saved data
     budgetTracker.loadData();
-    
-    // Initialize Bootstrap tooltips
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipTriggerList.forEach(tooltipTriggerEl => {
-        new bootstrap.Tooltip(tooltipTriggerEl);
-    });
+    chart.updateChart(budgetTracker.getData());
+    ui.displayData(budgetTracker.getData());
+    // Initialize tax toggle
+   
+    initializeTaxToggle(budgetTracker, ui, chart);
 
-    // Event Listeners
-    document.getElementById('addExpenseBtn').addEventListener('click', () => {
+    function initializeTaxToggle(budgetTracker, ui, chart) {
+      
+        const taxToggle = document.getElementById('taxToggle');
+        const salaryInput = document.getElementById('salary');
+        const netSalaryInput = document.getElementById('netSalaryInput');
+        const salaryDetails = document.getElementById('salaryDetails');
+        const salaryLabel = document.getElementById('salaryLabel');
+    
+        if (taxToggle && salaryInput && netSalaryInput) {
+            // Load saved preference
+            const savedUseTax = localStorage.getItem('useTax') !== 'false';
+            taxToggle.checked = savedUseTax;
+            
+            // Set initial visibility
+            updateSalaryInputs(savedUseTax);
+    
+            taxToggle.addEventListener('change', (e) => {
+                const useTax = e.target.checked;
+                updateSalaryInputs(useTax);
+                localStorage.setItem('useTax', useTax);
+    
+                // Transfer value between inputs
+                if (useTax && netSalaryInput.value) {
+                    // Approximate gross from net (simplified)
+                    salaryInput.value = (parseFloat(netSalaryInput.value) * 1.3).toFixed(2);
+                } else if (!useTax && salaryInput.value) {
+                    // Use actual net from tax calculation
+                    const { netSalary } = TaxCalculator.calculateNetSalary(parseFloat(salaryInput.value), 30);
+                    netSalaryInput.value = netSalary.toFixed(2);
+                }
+    
+                // Update budget tracker with new value
+                budgetTracker.updateSalary(useTax ? parseFloat(salaryInput.value) : parseFloat(netSalaryInput.value));
+                budgetTracker.setUseTax(useTax);
+                
+                // Update UI
+                ui.displayData(budgetTracker.getData());
+                chart.updateChart(budgetTracker.getData());
+            });
+    
+            // Handle salary input changes
+            salaryInput.addEventListener('input', (e) => {
+                const value = parseFloat(e.target.value) || 0;
+                budgetTracker.updateSalary(value);
+                ui.displayData(budgetTracker.getData());
+                chart.updateChart(budgetTracker.getData());
+            });
+    
+            // Handle net salary input changes
+            netSalaryInput.addEventListener('input', (e) => {
+                const value = parseFloat(e.target.value) || 0;
+                budgetTracker.updateSalary(value);
+                ui.displayData(budgetTracker.getData());
+                chart.updateChart(budgetTracker.getData());
+            });
+        }
+    }
+    
+    function updateSalaryInputs(useTax) {
+        const grossContainer = document.getElementById('grossSalaryContainer');
+        const netContainer = document.getElementById('netSalaryContainer');
+        const salaryDetails = document.getElementById('salaryDetails');
+        
+        if (grossContainer && netContainer) {
+            grossContainer.style.display = useTax ? 'block' : 'none';
+            netContainer.style.display = useTax ? 'none' : 'block';
+            if (salaryDetails) {
+                salaryDetails.style.display = useTax ? 'block' : 'none';
+            }
+        }
+    }
+
+
+    document.getElementById('addExpenseBtn')?.addEventListener('click', () => {
         const expense = ui.getExpenseInput();
         if (expense) {
             budgetTracker.addExpense(expense);
             ui.displayData(budgetTracker.getData());
             chart.updateChart(budgetTracker.getData());
             ui.clearExpenseInput();
+        }
+    });
+
+    // Close side nav when clicking outside
+    document.addEventListener('click', (e) => {
+        const sideNav = document.getElementById('sideNav');
+        const burgerMenu = document.getElementById('burgerMenu');
+        
+        if (!sideNav?.contains(e.target) && !burgerMenu?.contains(e.target)) {
+            sideNav?.classList.remove('open');
+            document.getElementById('overlay')?.classList.remove('show');
         }
     });
 
@@ -160,7 +246,46 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         }
       }
-     initPWA();
+   
+
+     function initializeTooltips() {
+        const tooltipElements = document.querySelectorAll('[data-tooltip]');
+        tooltipElements.forEach(element => {
+            tippy(element, {
+                content: element.getAttribute('data-tooltip'),
+                placement: 'right',
+                theme: 'custom',
+                arrow: true,
+                animation: 'scale'
+            });
+        });
+    }
+    
+    function initializeTaxToggle() {
+        const taxToggle = document.getElementById('taxToggle');
+        const grossSalaryInput = document.getElementById('grossSalary');
+        const netSalaryInput = document.getElementById('netSalary');
+        const salaryDetails = document.getElementById('salaryDetails');
+    
+        if (taxToggle) {
+            taxToggle.addEventListener('change', () => {
+                const useTax = taxToggle.checked;
+                grossSalaryInput.style.display = useTax ? 'block' : 'none';
+                netSalaryInput.style.display = useTax ? 'none' : 'block';
+                salaryDetails.style.display = useTax ? 'block' : 'none';
+                
+                // Save preference
+                localStorage.setItem('useTax', useTax);
+            });
+    
+            // Load saved preference
+            const savedUseTax = localStorage.getItem('useTax') === 'true';
+            taxToggle.checked = savedUseTax;
+            grossSalaryInput.style.display = savedUseTax ? 'block' : 'none';
+            netSalaryInput.style.display = savedUseTax ? 'none' : 'block';
+            salaryDetails.style.display = savedUseTax ? 'block' : 'none';
+        }
+    }
 
 
     // Grocery List Functionality
