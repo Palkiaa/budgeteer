@@ -185,14 +185,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
  
     function initPWA() {
+       
         const installButton = document.getElementById('pwaInstallBtn');
-      
+
         // For iOS, show a custom install message
         if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
           showInstallInstructions();
           return;
         }
-      
+
         // Check if already installed
         if (window.matchMedia('(display-mode: standalone)').matches) {
           document.getElementById('pwaInstall').style.display = 'none';
@@ -200,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           document.getElementById('pwaInstall').style.display = 'block';
         }
-      
+
         // Android install logic
         window.addEventListener('beforeinstallprompt', (e) => {
           e.preventDefault();
@@ -209,12 +210,13 @@ document.addEventListener('DOMContentLoaded', () => {
             installButton.style.display = 'block';
           }
         });
-      
+
         installButton?.addEventListener('click', async () => {
+            console.log(installButton)
           if (!deferredPrompt) {
             return;
           }
-      
+
           try {
             await deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
@@ -222,17 +224,17 @@ document.addEventListener('DOMContentLoaded', () => {
           } catch (error) {
             console.error('Error during installation:', error);
           }
-      
+
           deferredPrompt = null;
           installButton.style.display = 'none';
         });
-      
+
         window.addEventListener('appinstalled', () => {
           console.log('PWA installed successfully');
           installButton.style.display = 'none';
         });
       }
-      
+
       function showInstallInstructions() {
         const installBanner = document.getElementById('installBanner');
         if (installBanner) {
