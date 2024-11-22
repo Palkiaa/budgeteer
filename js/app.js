@@ -134,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (!sideNav?.contains(e.target) && !burgerMenu?.contains(e.target)) {
             sideNav?.classList.remove('open');
+            sideNav?.classList.add('hidden');
             document.getElementById('overlay')?.classList.remove('show');
         }
     });
