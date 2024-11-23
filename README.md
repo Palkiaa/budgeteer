@@ -1,5 +1,5 @@
 # budgeteer
 
-npm install
-npm run dev
+npm instal<br/>
+npm run dev<br/>
 click the localhost link
